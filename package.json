@@ -1,0 +1,16 @@
+{
+  "name": "raymen_week5_cheerio_with_nodejs",
+  "version": "1.0.0",
+  "description": "raymen_week5_cheerio_with_nodejs",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Rupam Sau",
+  "license": "ISC",
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.5",
+    "dotenv": "^8.2.0",
+    "request": "^2.88.2"
+  }
+}
