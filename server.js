@@ -28,8 +28,8 @@ r1.question(`What's the name of artists: `, (name) => {
         const item = $(el).text();
         arr.push(item);
       });
-      console.log(arr);
-      console.log(artists);
+      // console.log(arr);
+      // console.log(artists);
 
       // Marge the two array and get the common items
       let mailArtists = ""
@@ -39,7 +39,7 @@ r1.question(`What's the name of artists: `, (name) => {
           mailArtists = mailArtists + String(artists[i]) + " "
         }
       }
-      console.log(mailArtists);
+      // console.log(mailArtists);
       if (mailArtists.length > 0) {
         // Sent a mail
         // Create a grid to send on the mail
