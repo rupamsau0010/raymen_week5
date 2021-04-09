@@ -23,30 +23,39 @@ r1.question(`What's the name of artists: `, (name) => {
   request(URL, (err, response, html) => {
     if (!err && response.statusCode == 200) {
       const $ = cheerio.load(html);
-      arr = [];
-      $(".title-artist em").each((i, el) => {
-        const item = $(el).text();
-        arr.push(item);
+      myDist = {};
+      $(".title-artist").each((i, el) => {
+        const artist = $(el).find("em").text();
+        const song = $(el).find("cite").text();
+        myDist[String(artist)] = String(song);
       });
-      // console.log(arr);
+      // console.log(Object.keys(myDist));
       // console.log(artists);
+      artistArr = Object.keys(myDist);
 
-      // Marge the two array and get the common items
-      let mailArtists = ""
+      let mailArtists = "";
+      let mailBody = "";
+      let mailArtistsArr = [];
       for (let i = 0; i < artists.length; i++) {
-        if (arr.includes(artists[i])) {
+        if (artistArr.includes(artists[i])) {
           // console.log(artists[i]);
-          mailArtists = mailArtists + String(artists[i]) + " "
+          mailArtists = mailArtists + String(artists[i]) + ", ";
+          mailArtistsArr.push(String(artists[i]));
+          mailBody += "<li>" + "<b>" + String(artists[i]) + "</b>" + ": " + "<i>" + String(myDist[artists[i]]) + "</i>" + "</li>";
         }
       }
       // console.log(mailArtists);
-      if (mailArtists.length > 0) {
+      // console.log(mailArtistsArr);
+      // console.log(mailBody);
+      mailArtists = mailArtists.slice(0, -2)
+
+      if (mailArtistsArr.length > 0) {
         // Sent a mail
         // Create a grid to send on the mail
         const output = `
-        <h3>Your artists are: ${mailArtists}</h3>
+        <ul>${mailBody},</ul>
         `;
-
+      
         let transporter = nodemailer.createTransport({
           host: "smtp.gmail.com",
           port: 465,
@@ -59,11 +68,11 @@ r1.question(`What's the name of artists: `, (name) => {
             rejectUnauthorized: false,
           },
         });
-
+      
         let mailOptions = {
-          from: `"Name of the Artists" <${process.env.email1ID}>`, // sender address
+          from: `<${process.env.email1ID}>`, // sender address
           to: process.env.email2ID, // list of receivers
-          subject: "Name of the Artists", // Subject line
+          subject: `Your artist(s) are: ${mailArtists}`, // Subject line
           text: "Name of the Artists", // plain text body
           html: output, // html body
         };
